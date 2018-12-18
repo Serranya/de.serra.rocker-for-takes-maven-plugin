@@ -39,12 +39,13 @@ public class DefaultResponseClass implements ResponseClass {
 		}
 
 		w.append("\n");
-		w.append("import de.serra.condorcat.rocker.InputStreamRockerOutputFactory;\n");
+		w.append("import com.fizzed.rocker.runtime.ArrayOfByteArraysOutput;\n");
 		w.append("import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;\n");
 		w.append("import lombok.EqualsAndHashCode;\n");
 		w.append("import org.takes.Response;\n");
 		w.append("import org.takes.rs.RsEmpty;\n");
 		w.append("import org.takes.rs.RsWrap;\n");
+		w.append("import java.io.ByteArrayInputStream;");
 		w.append("import java.io.IOException;\n");
 		w.append("import java.io.InputStream;\n");
 
@@ -86,11 +87,12 @@ public class DefaultResponseClass implements ResponseClass {
 		w.append("\n");
 		w.append("\t\t\t@Override\n");
 		w.append("\t\t\t public InputStream body() throws IOException {\n");
-		w.append("\t\t\t\treturn new ").append(model.getName()).append("()\n");
+		w.append("\t\t\t\treturn new ").append("ByteArrayInputStream(\n");
+		w.append("\t\t\t\t\tnew ").append(model.getName()).append("()\n");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
-			w.append("\t\t\t\t\t\t.").append(arg.getName()).append("(").append(arg.getName()).append(")\n");
+			w.append("\t\t\t\t\t\t\t.").append(arg.getName()).append("(").append(arg.getName()).append(")\n");
 		}
-		w.append("\t\t\t\t\t\t.render(new InputStreamRockerOutputFactory()).getStream();\n");
+		w.append("\t\t\t\t\t\t\t.render(ArrayOfByteArraysOutput.FACTORY).toByteArray());\n");
 		w.append("\t\t\t}\n");
 		w.append("\t\t});\n");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
