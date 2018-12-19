@@ -10,15 +10,27 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Set;
 
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DefaultResponseClass implements ResponseClass {
 	private final TemplateModel model;
 	private final OutputStream out;
+	private final Set<Flag> flags;
+
+	public enum Flag {
+		SUPPRESS_FB_WARNINGS, LOMBOK_EQUALS_AND_HASCODE
+	}
 
 	public DefaultResponseClass(TemplateModel model, OutputStream out) {
+		this(model, out, Collections.emptySet());
+	}
+
+	public DefaultResponseClass(TemplateModel model, OutputStream out, Set<Flag> flags) {
 		this.model = model;
 		this.out = out;
+		this.flags = flags;
 	}
 
 	@Override
@@ -40,8 +52,12 @@ public class DefaultResponseClass implements ResponseClass {
 
 		w.append("\n");
 		w.append("import com.fizzed.rocker.runtime.ArrayOfByteArraysOutput;\n");
-		w.append("import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;\n");
-		w.append("import lombok.EqualsAndHashCode;\n");
+		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {
+			w.append("import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;\n");
+		}
+		if (flags.contains(Flag.LOMBOK_EQUALS_AND_HASCODE)) {
+			w.append("import lombok.EqualsAndHashCode;\n");
+		}
 		w.append("import org.takes.Response;\n");
 		w.append("import org.takes.rs.RsEmpty;\n");
 		w.append("import org.takes.rs.RsWrap;\n");
@@ -57,9 +73,13 @@ public class DefaultResponseClass implements ResponseClass {
 
 		w.append("\n");
 
-		w.append("@SuppressFBWarnings(value = \"USBR_UNNECESSARY_STORE_BEFORE_RETURN\", "
-				+ "justification = \"generated code\")\n");
-		w.append("@EqualsAndHashCode(callSuper = true)\n");
+		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {
+			w.append("@SuppressFBWarnings(value = \"USBR_UNNECESSARY_STORE_BEFORE_RETURN\", "
+					+ "justification = \"generated code\")\n");
+		}
+		if (flags.contains(Flag.LOMBOK_EQUALS_AND_HASCODE)) {
+			w.append("@EqualsAndHashCode(callSuper = true)\n");
+		}
 		w.append("public class Rs").append(model.getName()).append(" extends RsWrap {\n");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
 			w.append("\tprivate final ").append(arg.getType()).append(" ").append(arg.getName()).append(";\n");
@@ -75,7 +95,7 @@ public class DefaultResponseClass implements ResponseClass {
 			} else {
 				firstCArg = false;
 			}
-			w.append(arg.getType()).append(" ").append(arg.getName());
+			w.append("final ").append(arg.getType()).append(" ").append(arg.getName());
 		}
 		w.append(") {\n");
 		w.append("\t\tsuper(new Response() {\n");
