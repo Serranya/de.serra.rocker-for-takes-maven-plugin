@@ -4,6 +4,6 @@
 	<suppress>
 		<notes>file name: slf4j-api-1.7.7.jar</notes>
 		<sha1>2b8019b6249bb05d81d3a3094e468753e2b21311</sha1>
-		<cve>CVE-2018-8088</cve><!--https://github.com/fizzed/rocker/pull/96 -->
+		<cve>CVE-2018-8088</cve><!-- https://github.com/jeremylong/DependencyCheck/issues/1229 -->
 	</suppress>
 </suppressions>
