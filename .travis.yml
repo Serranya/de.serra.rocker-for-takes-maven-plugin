@@ -1,7 +1,0 @@
-language: java
-jdk:
-   - openjdk11
-script: ./mvnw clean verify -Prelease
-cache:
-   directories:
-      - $HOME/.m2
