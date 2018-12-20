@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"de.serra.rft","l":"DefaultResponseClass"},{"p":"de.serra.rft","l":"FileWritingResponseClass"},{"p":"de.serra.rft","l":"DefaultResponseClass.Flag"},{"p":"de.serra.rft","l":"ResponseClass"},{"p":"de.serra.rft","l":"RockerResponseMojo"}]
