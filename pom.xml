@@ -22,7 +22,7 @@
 		<maven.version>3.6.0</maven.version>
 		<spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 		<checkstyle.suppressions.location>checkstyle-supressions.xml</checkstyle.suppressions.location>
-		<scmpublish.content>${project.build.directory}/${project.groupId}.${project.artifactId}</scmpublish.content>
+		<scmpublish.content>${project.build.directory}/${project.groupId}.${project.artifactId}/${project.artifactId}</scmpublish.content>
 	</properties>
 
 	<dependencies>
