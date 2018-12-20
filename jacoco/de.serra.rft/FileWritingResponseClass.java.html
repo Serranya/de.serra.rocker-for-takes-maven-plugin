@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileWritingResponseClass.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rocker-for-takes-maven-plugin Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">de.serra.rft</a> &gt; <span class="el_source">FileWritingResponseClass.java</span></div><h1>FileWritingResponseClass.java</h1><pre class="source lang-java linenums">package de.serra.rft;
+
+import com.fizzed.rocker.compiler.RockerUtil;
+import com.fizzed.rocker.model.TemplateModel;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
+
+public class FileWritingResponseClass implements ResponseClass {
+	private final TemplateModel model;
+	private final Path dir;
+
+<span class="nc" id="L17">	public FileWritingResponseClass(TemplateModel model, Path baseDir) {</span>
+<span class="nc" id="L18">		this.model = model;</span>
+<span class="nc" id="L19">		this.dir = baseDir;</span>
+<span class="nc" id="L20">	}</span>
+
+	@SuppressFBWarnings(&quot;PATH_TRAVERSAL_IN&quot;)
+	@Override
+	public void generate() throws IOException {
+<span class="nc bnc" id="L25" title="All 2 branches missed.">		if (model.hasRockerBodyArgument()) {</span>
+<span class="nc" id="L26">			return;</span>
+		}
+
+<span class="nc" id="L29">		Path outDirPath = Optional.ofNullable(RockerUtil.packageNameToPath(model.getPackageName()))</span>
+<span class="nc" id="L30">				.map(dir::resolve).orElse(dir);</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">		if (Files.exists(outDirPath)) {</span>
+<span class="nc" id="L32">			Files.createDirectories(outDirPath);</span>
+		}
+
+<span class="nc" id="L35">		try (OutputStream out = Files.newOutputStream(outDirPath.resolve(&quot;Rs&quot; + model.getName() + &quot;.java&quot;))) {</span>
+<span class="nc" id="L36">			new DefaultResponseClass(model, out).generate();</span>
+		}
+<span class="nc" id="L38">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
