@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>de.serra</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0.30</version>
+		<version>1.0.31</version>
 	</parent>
 	<artifactId>rocker-for-takes-maven-plugin</artifactId>
 	<version>${revision}</version>
@@ -22,6 +22,7 @@
 		<maven.version>3.6.0</maven.version>
 		<spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 		<checkstyle.suppressions.location>checkstyle-supressions.xml</checkstyle.suppressions.location>
+		<scmpublish.content>${project.build.directory}/${project.groupId}.${project.artifactId}</scmpublish.content>
 	</properties>
 
 	<dependencies>
@@ -147,25 +148,6 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
-	<scm>
-		<connection>scm:git:https://github.com/Serranya/de.serra.rocker-for-takes-maven-plugin.git</connection>
-		<developerConnection>scm:git:git@github.com:Serranya/de.serra.rocker-for-takes-maven-plugin.git</developerConnection>
-		<url>https://github.com/Serranya/de.serra.rocker-for-takes-maven-plugin</url>
-	</scm>
-
-	<distributionManagement>
-		<site>
-			<id>github</id>
-			<name>github-pages</name>
-			<url>scm:git:git@github.com:Serranya/de.serra.rocker-for-takes-maven-plugin.git</url>
-		</site>
-		<repository>
-			<id>bintray</id>
-			<url>https://api.bintray.com/maven/serranya/serras-artifacts/de.serra.rocker-for-takes-maven-plugin</url>
-		</repository>
-	</distributionManagement>
-	<url>https://serranya.github.io/de.serra.rocker-for-takes-maven-plugin</url>
 
 	<repositories>
 		<repository>
