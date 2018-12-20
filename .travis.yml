@@ -1,7 +1,9 @@
 language: java
+after_success:
+   - bash <(curl -s https://codecov.io/bash)
 jdk:
    - openjdk11
-script: ./mvnw clean verify -Prelease
+script: ./mvnw clean verify jacoco:report -Prelease
 cache:
    directories:
       - $HOME/.m2
