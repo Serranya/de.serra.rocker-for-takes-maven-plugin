@@ -106,7 +106,7 @@ public class DefaultResponseClass implements ResponseClass {
 		w.append("\t\t\t}\n");
 		w.append("\n");
 		w.append("\t\t\t@Override\n");
-		w.append("\t\t\t public InputStream body() throws IOException {\n");
+		w.append("\t\t\tpublic InputStream body() throws IOException {\n");
 		w.append("\t\t\t\treturn new ").append("ByteArrayInputStream(\n");
 		w.append("\t\t\t\t\tnew ").append(model.getName()).append("()\n");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
