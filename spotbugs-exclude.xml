@@ -8,8 +8,4 @@
 	<Match> <!-- Generated -->
 		<Class name="de.serra.rft.HelpMojo" />
 	</Match>
-
-	<Match><!-- https://github.com/mebigfatguy/fb-contrib/issues/320 -->
-		<BugCode name="FCBL"/>
-	</Match>
 </FindBugsFilter>
