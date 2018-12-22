@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>de.serra</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0.31</version>
+		<version>1.0.32</version>
 	</parent>
 	<artifactId>rocker-for-takes-maven-plugin</artifactId>
 	<version>${revision}</version>
@@ -19,6 +19,8 @@
 
 	<properties>
 		<revision>0.0.1-SNAPSHOT</revision>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.version>3.6.0</maven.version>
 		<spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 		<checkstyle.suppressions.location>checkstyle-supressions.xml</checkstyle.suppressions.location>
