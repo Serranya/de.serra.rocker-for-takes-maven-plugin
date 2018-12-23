@@ -12,9 +12,13 @@ import com.fizzed.rocker.compiler.TemplateParser;
 import com.fizzed.rocker.model.TemplateModel;
 import com.fizzed.rocker.runtime.ParserException;
 
+import de.serra.rft.DefaultResponseClass.Flag;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -46,6 +50,9 @@ public class RockerResponseMojo extends AbstractMojo {
 	 */
 	@Parameter(property = "rft.suffixRegex", defaultValue = ".*\\.rocker\\.(raw|html)$")
 	protected String suffixRegex;
+
+	@Parameter(property = "rft.useLombok", defaultValue = "true")
+	protected boolean useLombok;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		if (templateDirectory == null) {
@@ -89,8 +96,12 @@ public class RockerResponseMojo extends AbstractMojo {
 				errors++;
 			}
 			try {
+				Set<Flag> flags = EnumSet.noneOf(Flag.class);
+				if (useLombok) {
+					flags.add(Flag.LOMBOK_EQUALS_AND_HASCODE);
+				}
 				if (model != null) {
-					new FileWritingResponseClass(model, outputDirectory.toPath()).generate();
+					new FileWritingResponseClass(model, outputDirectory.toPath(), flags).generate();
 					generated++;
 				}
 			} catch (IOException e) {
