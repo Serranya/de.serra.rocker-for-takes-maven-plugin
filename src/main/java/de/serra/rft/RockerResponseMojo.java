@@ -51,8 +51,17 @@ public class RockerResponseMojo extends AbstractMojo {
 	@Parameter(property = "rft.suffixRegex", defaultValue = ".*\\.rocker\\.(raw|html)$")
 	protected String suffixRegex;
 
+	/**
+	 * Whether {@code @EqualsAndHashCode} from lombok should be generated.
+	 */
 	@Parameter(property = "rft.useLombok", defaultValue = "true")
 	protected boolean useLombok;
+
+	/**
+	 * Whether {@code @SuppressFBWarnings} annotations should be generated.
+	 */
+	@Parameter(property = "rft.useSupressFbWarnings", defaultValue = "true")
+	protected boolean useSupressFbWarnings;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		if (templateDirectory == null) {
@@ -99,6 +108,9 @@ public class RockerResponseMojo extends AbstractMojo {
 				Set<Flag> flags = EnumSet.noneOf(Flag.class);
 				if (useLombok) {
 					flags.add(Flag.LOMBOK_EQUALS_AND_HASCODE);
+				}
+				if (useSupressFbWarnings) {
+					flags.add(Flag.SUPPRESS_FB_WARNINGS);
 				}
 				if (model != null) {
 					new FileWritingResponseClass(model, outputDirectory.toPath(), flags).generate();

@@ -53,6 +53,7 @@
 				<configuration>
 					<templateDirectory>src/main/resources/</templateDirectory>
 					<useLombok>false</useLombok>
+					<useSupressFbWarnings>false</useSupressFbWarnings>
 				</configuration>
 				<executions>
 					<execution>
