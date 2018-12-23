@@ -1,30 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>de.serra</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0.34</version>
+		<version>1.1.0</version>
 	</parent>
+
 	<artifactId>rocker-for-takes-maven-plugin</artifactId>
 	<version>${revision}</version>
+
 	<packaging>maven-plugin</packaging>
+
+	<name>rocker-for-takes-maven-plugin Maven Plugin</name>
+	<description>Generates responses for takes wrapping rocker templates.</description>
+	<inceptionYear>2018</inceptionYear>
+
+	<developers>
+		<developer>
+			<name>Peter Lamby</name>
+			<email>peterlamby@web.de</email>
+			<url>https://serra.website</url>
+		</developer>
+	</developers>
 
 	<prerequisites>
 		<maven>${maven.version}</maven>
 	</prerequisites>
 
 	<properties>
-		<revision>0.0.4-SNAPSHOT</revision>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+
 		<maven.version>3.6.0</maven.version>
-		<spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
-		<scmpublish.content>${project.build.directory}/${project.groupId}.${project.artifactId}/${project.artifactId}</scmpublish.content>
+
 		<owasp.dep.supressionFile>dependency-check-suppressions.xml</owasp.dep.supressionFile>
+
+		<revision>0.0.4-SNAPSHOT</revision>
+
+		<scmpublish.content>${project.build.directory}/${project.groupId}.${project.artifactId}/${project.artifactId}</scmpublish.content>
+
+		<spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 	</properties>
 
 	<dependencies>
@@ -40,10 +59,9 @@
 			<version>3.1.9</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-plugin-api</artifactId>
+			<artifactId>maven-artifact</artifactId>
 			<version>${maven.version}</version>
 			<scope>provided</scope>
 		</dependency>
@@ -55,15 +73,9 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-artifact</artifactId>
+			<artifactId>maven-plugin-api</artifactId>
 			<version>${maven.version}</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-compat</artifactId>
-			<version>${maven.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
@@ -71,10 +83,17 @@
 			<version>${maven.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-compat</artifactId>
+			<version>${maven.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -85,6 +104,14 @@
 		</dependency>
 	</dependencies>
 
+	<repositories>
+		<repository>
+			<id>serras-artifacts</id>
+			<name>bintray</name>
+			<url>https://dl.bintray.com/serranya/serras-artifacts</url>
+		</repository>
+	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -93,6 +120,18 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<!-- workaround until https://issues.apache.org/jira/browse/MCHECKSTYLE-357 is released -->
+					<configLocation>${project.build.directory}/checkstyle-rules.xml</configLocation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<profiles>
 		<profile>
@@ -133,34 +172,4 @@
 			</build>
 		</profile>
 	</profiles>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration><!-- workaround until https://issues.apache.org/jira/browse/MCHECKSTYLE-357 is released -->
-					<configLocation>${project.build.directory}/checkstyle-rules.xml</configLocation>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
-
-	<repositories>
-		<repository>
-			<id>serras-artifacts</id>
-			<name>bintray</name>
-			<url>https://dl.bintray.com/serranya/serras-artifacts</url>
-		</repository>
-	</repositories>
-
-	<name>rocker-for-takes-maven-plugin Maven Plugin</name>
-	<description>Generates responses for takes wrapping rocker templates.</description>
-	<inceptionYear>2018</inceptionYear>
-	<developers>
-		<developer>
-			<name>Peter Lamby</name>
-			<url>https://serra.website</url>
-			<email>peterlamby@web.de</email>
-		</developer>
-	</developers>
 </project>
