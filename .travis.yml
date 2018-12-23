@@ -3,7 +3,7 @@ after_success:
    - bash <(curl -s https://codecov.io/bash)
 jdk:
    - openjdk11
-script: ./mvnw clean verify jacoco:report jacoco:report-integration -Prelease,run-its
+script: ./mvnw clean verify jacoco:report jacoco:report-integration -Prelease
 cache:
    directories:
       - $HOME/.m2
