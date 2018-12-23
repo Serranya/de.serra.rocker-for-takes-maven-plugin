@@ -7,7 +7,7 @@ assets:
 docker:
    image: "openjdk:11"
 merge:
-   - "./mvnw -B clean verify -Prelease,run-its"
+   - "./mvnw -B clean verify -Prelease"
 release:
    script: |-
       mkdir -p ~/.ssh
@@ -16,5 +16,5 @@ release:
       echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null" > ~/.ssh/config
       git config --global user.email me@rultor.com
       git config --global user.name rultor
-      ./mvnw -B -e -s ../settings.xml clean deploy site-deploy -Drevision=$tag -Prelease,run-its
+      ./mvnw -B -e -s ../settings.xml clean deploy site-deploy -Drevision=$tag -Prelease
 

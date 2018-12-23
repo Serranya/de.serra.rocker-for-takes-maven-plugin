@@ -103,7 +103,7 @@
 
 	<profiles>
 		<profile>
-			<id>run-its</id>
+			<id>release</id>
 			<build>
 				<plugins>
 					<plugin>
