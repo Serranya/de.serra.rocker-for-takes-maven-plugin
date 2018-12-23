@@ -106,7 +106,7 @@ public class DefaultResponseClass implements ResponseClass {
 <span class="nc" id="L106">		w.append(&quot;\t\t\t}\n&quot;);</span>
 <span class="nc" id="L107">		w.append(&quot;\n&quot;);</span>
 <span class="nc" id="L108">		w.append(&quot;\t\t\t@Override\n&quot;);</span>
-<span class="nc" id="L109">		w.append(&quot;\t\t\t public InputStream body() throws IOException {\n&quot;);</span>
+<span class="nc" id="L109">		w.append(&quot;\t\t\tpublic InputStream body() throws IOException {\n&quot;);</span>
 <span class="nc" id="L110">		w.append(&quot;\t\t\t\treturn new &quot;).append(&quot;ByteArrayInputStream(\n&quot;);</span>
 <span class="nc" id="L111">		w.append(&quot;\t\t\t\t\tnew &quot;).append(model.getName()).append(&quot;()\n&quot;);</span>
 <span class="nc bnc" id="L112" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
