@@ -52,8 +52,8 @@ public class DefaultResponseClass implements ResponseClass {
 
 <span class="fc" id="L53">		w.append(&quot;\n&quot;);</span>
 <span class="fc" id="L54">		w.append(&quot;import com.fizzed.rocker.runtime.ArrayOfByteArraysOutput;\n&quot;);</span>
-<span class="pc bpc" id="L55" title="1 of 2 branches missed.">		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {</span>
-<span class="nc" id="L56">			w.append(&quot;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;\n&quot;);</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {</span>
+<span class="fc" id="L56">			w.append(&quot;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;\n&quot;);</span>
 		}
 <span class="fc bfc" id="L58" title="All 2 branches covered.">		if (flags.contains(Flag.LOMBOK_EQUALS_AND_HASCODE)) {</span>
 <span class="fc" id="L59">			w.append(&quot;import lombok.EqualsAndHashCode;\n&quot;);</span>
@@ -73,8 +73,8 @@ public class DefaultResponseClass implements ResponseClass {
 
 <span class="fc" id="L74">		w.append(&quot;\n&quot;);</span>
 
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {</span>
-<span class="nc" id="L77">			w.append(&quot;@SuppressFBWarnings(value = \&quot;USBR_UNNECESSARY_STORE_BEFORE_RETURN\&quot;, &quot;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {</span>
+<span class="fc" id="L77">			w.append(&quot;@SuppressFBWarnings(value = \&quot;USBR_UNNECESSARY_STORE_BEFORE_RETURN\&quot;, &quot;</span>
 					+ &quot;justification = \&quot;generated code\&quot;)\n&quot;);
 		}
 <span class="fc bfc" id="L80" title="All 2 branches covered.">		if (flags.contains(Flag.LOMBOK_EQUALS_AND_HASCODE)) {</span>

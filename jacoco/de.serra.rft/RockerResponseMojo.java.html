@@ -51,73 +51,85 @@ import java.util.stream.Collectors;
 	@Parameter(property = &quot;rft.suffixRegex&quot;, defaultValue = &quot;.*\\.rocker\\.(raw|html)$&quot;)
 	protected String suffixRegex;
 
+	/**
+	 * Whether {@code @EqualsAndHashCode} from lombok should be generated.
+	 */
 	@Parameter(property = &quot;rft.useLombok&quot;, defaultValue = &quot;true&quot;)
 	protected boolean useLombok;
 
+	/**
+	 * Whether {@code @SuppressFBWarnings} annotations should be generated.
+	 */
+	@Parameter(property = &quot;rft.useSupressFbWarnings&quot;, defaultValue = &quot;true&quot;)
+	protected boolean useSupressFbWarnings;
+
 	public void execute() throws MojoExecutionException, MojoFailureException {
-<span class="nc bnc" id="L58" title="All 2 branches missed.">		if (templateDirectory == null) {</span>
-<span class="nc" id="L59">			throw new MojoExecutionException(&quot;Property templateDirectory cannot be null/empty&quot;);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">		if (templateDirectory == null) {</span>
+<span class="nc" id="L68">			throw new MojoExecutionException(&quot;Property templateDirectory cannot be null/empty&quot;);</span>
 		}
-<span class="nc bnc" id="L61" title="All 2 branches missed.">		if (this.outputDirectory == null) {</span>
-<span class="nc" id="L62">			throw new MojoExecutionException(&quot;Property outputDirectory cannot be null/empty&quot;);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		if (this.outputDirectory == null) {</span>
+<span class="nc" id="L71">			throw new MojoExecutionException(&quot;Property outputDirectory cannot be null/empty&quot;);</span>
 		}
 
-<span class="nc" id="L65">		Collection&lt;File&gt; allFiles = RockerUtil.listFileTree(templateDirectory);</span>
+<span class="nc" id="L74">		Collection&lt;File&gt; allFiles = RockerUtil.listFileTree(templateDirectory);</span>
 		Predicate&lt;String&gt; suffixPredicate =
-<span class="nc bnc" id="L67" title="All 2 branches missed.">				Pattern.compile(suffixRegex == null ? &quot;rocker.html&quot; : suffixRegex).asMatchPredicate();</span>
-<span class="nc" id="L68">		Collection&lt;File&gt; templateFiles =</span>
-<span class="nc" id="L69">				allFiles.stream().filter(f -&gt; suffixPredicate.test(f.getName())).collect(Collectors.toList());</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">				Pattern.compile(suffixRegex == null ? &quot;rocker.html&quot; : suffixRegex).asMatchPredicate();</span>
+<span class="nc" id="L77">		Collection&lt;File&gt; templateFiles =</span>
+<span class="nc" id="L78">				allFiles.stream().filter(f -&gt; suffixPredicate.test(f.getName())).collect(Collectors.toList());</span>
 
-<span class="nc" id="L71">		getLog().info(&quot;Parsing &quot; + templateFiles.size() + &quot; rocker template files&quot;);</span>
+<span class="nc" id="L80">		getLog().info(&quot;Parsing &quot; + templateFiles.size() + &quot; rocker template files&quot;);</span>
 
-<span class="nc" id="L73">		int errors = 0;</span>
-<span class="nc" id="L74">		int generated = 0;</span>
-<span class="nc" id="L75">		TemplateParser parser = new TemplateParser(new RockerConfiguration());</span>
-<span class="nc" id="L76">		parser.getConfiguration().setTemplateDirectory(templateDirectory);</span>
-<span class="nc" id="L77">		parser.getConfiguration().setOutputDirectory(outputDirectory);</span>
+<span class="nc" id="L82">		int errors = 0;</span>
+<span class="nc" id="L83">		int generated = 0;</span>
+<span class="nc" id="L84">		TemplateParser parser = new TemplateParser(new RockerConfiguration());</span>
+<span class="nc" id="L85">		parser.getConfiguration().setTemplateDirectory(templateDirectory);</span>
+<span class="nc" id="L86">		parser.getConfiguration().setOutputDirectory(outputDirectory);</span>
 
-<span class="nc bnc" id="L79" title="All 2 branches missed.">		for (File f : templateFiles) {</span>
-<span class="nc" id="L80">			TemplateModel model = null;</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		for (File f : templateFiles) {</span>
+<span class="nc" id="L89">			TemplateModel model = null;</span>
 			try {
 				// parse model
-<span class="nc" id="L83">				model = parser.parse(f);</span>
-<span class="nc" id="L84">			} catch (ParserException e) {</span>
-<span class="nc" id="L85">				getLog().error(&quot;Parsing failed for &quot; + f + &quot;:[&quot; + e.getLineNumber() + &quot;,&quot; + e.getColumnNumber()</span>
-<span class="nc" id="L86">						+ &quot;] &quot; + e.getMessage());</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">				if (failOnError) {</span>
-<span class="nc" id="L88">					throw new MojoExecutionException(&quot;Error while parsing templates&quot;, e);</span>
+<span class="nc" id="L92">				model = parser.parse(f);</span>
+<span class="nc" id="L93">			} catch (ParserException e) {</span>
+<span class="nc" id="L94">				getLog().error(&quot;Parsing failed for &quot; + f + &quot;:[&quot; + e.getLineNumber() + &quot;,&quot; + e.getColumnNumber()</span>
+<span class="nc" id="L95">						+ &quot;] &quot; + e.getMessage());</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">				if (failOnError) {</span>
+<span class="nc" id="L97">					throw new MojoExecutionException(&quot;Error while parsing templates&quot;, e);</span>
 				}
-<span class="nc" id="L90">				errors++;</span>
-<span class="nc" id="L91">			} catch (IOException e) {</span>
-<span class="nc" id="L92">				getLog().error(&quot;Unable to parse template&quot;, e);</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">				if (failOnError) {</span>
-<span class="nc" id="L94">					throw new MojoExecutionException(&quot;Error while parsing templates&quot;, e);</span>
+<span class="nc" id="L99">				errors++;</span>
+<span class="nc" id="L100">			} catch (IOException e) {</span>
+<span class="nc" id="L101">				getLog().error(&quot;Unable to parse template&quot;, e);</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">				if (failOnError) {</span>
+<span class="nc" id="L103">					throw new MojoExecutionException(&quot;Error while parsing templates&quot;, e);</span>
 				}
-<span class="nc" id="L96">				errors++;</span>
-<span class="nc" id="L97">			}</span>
+<span class="nc" id="L105">				errors++;</span>
+<span class="nc" id="L106">			}</span>
 			try {
-<span class="nc" id="L99">				Set&lt;Flag&gt; flags = EnumSet.noneOf(Flag.class);</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">				if (useLombok) {</span>
-<span class="nc" id="L101">					flags.add(Flag.LOMBOK_EQUALS_AND_HASCODE);</span>
+<span class="nc" id="L108">				Set&lt;Flag&gt; flags = EnumSet.noneOf(Flag.class);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">				if (useLombok) {</span>
+<span class="nc" id="L110">					flags.add(Flag.LOMBOK_EQUALS_AND_HASCODE);</span>
 				}
-<span class="nc bnc" id="L103" title="All 2 branches missed.">				if (model != null) {</span>
-<span class="nc" id="L104">					new FileWritingResponseClass(model, outputDirectory.toPath(), flags).generate();</span>
-<span class="nc" id="L105">					generated++;</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">				if (useSupressFbWarnings) {</span>
+<span class="nc" id="L113">					flags.add(Flag.SUPPRESS_FB_WARNINGS);</span>
 				}
-<span class="nc" id="L107">			} catch (IOException e) {</span>
-<span class="nc" id="L108">				getLog().error(&quot;Unable to generate responseClass&quot;, e);</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">				if (failOnError) {</span>
-<span class="nc" id="L110">					throw new MojoExecutionException(&quot;Unable to generate responseClass&quot;, e);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">				if (model != null) {</span>
+<span class="nc" id="L116">					new FileWritingResponseClass(model, outputDirectory.toPath(), flags).generate();</span>
+<span class="nc" id="L117">					generated++;</span>
 				}
-<span class="nc" id="L112">				errors++;</span>
-<span class="nc" id="L113">			}</span>
-<span class="nc" id="L114">		}</span>
+<span class="nc" id="L119">			} catch (IOException e) {</span>
+<span class="nc" id="L120">				getLog().error(&quot;Unable to generate responseClass&quot;, e);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">				if (failOnError) {</span>
+<span class="nc" id="L122">					throw new MojoExecutionException(&quot;Unable to generate responseClass&quot;, e);</span>
+				}
+<span class="nc" id="L124">				errors++;</span>
+<span class="nc" id="L125">			}</span>
+<span class="nc" id="L126">		}</span>
 
-<span class="nc" id="L116">		getLog().info(&quot;Generated &quot; + generated + &quot; rocker response java source files&quot;);</span>
+<span class="nc" id="L128">		getLog().info(&quot;Generated &quot; + generated + &quot; rocker response java source files&quot;);</span>
 
-<span class="nc bnc" id="L118" title="All 4 branches missed.">		if (errors &gt; 0 &amp;&amp; failOnError) {</span>
-<span class="nc" id="L119">			throw new RuntimeException(&quot;Caught &quot; + errors + &quot; errors.&quot;);</span>
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (errors &gt; 0 &amp;&amp; failOnError) {</span>
+<span class="nc" id="L131">			throw new RuntimeException(&quot;Caught &quot; + errors + &quot; errors.&quot;);</span>
 		}
-<span class="nc" id="L121">	}</span>
+<span class="nc" id="L133">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
