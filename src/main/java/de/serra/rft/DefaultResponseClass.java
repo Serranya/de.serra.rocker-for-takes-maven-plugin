@@ -61,7 +61,7 @@ public class DefaultResponseClass implements ResponseClass {
 		w.append("import org.takes.Response;\n");
 		w.append("import org.takes.rs.RsEmpty;\n");
 		w.append("import org.takes.rs.RsWrap;\n");
-		w.append("import java.io.ByteArrayInputStream;");
+		w.append("import java.io.ByteArrayInputStream;\n");
 		w.append("import java.io.IOException;\n");
 		w.append("import java.io.InputStream;\n");
 
@@ -88,21 +88,17 @@ public class DefaultResponseClass implements ResponseClass {
 		w.append("\n");
 
 		w.append("\tpublic Rs").append(model.getName()).append("(");
-		boolean firstCArg = true;
+		w.append("final Response res");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
-			if (!firstCArg) {
-				w.append(", ");
-			} else {
-				firstCArg = false;
-			}
+			w.append(", ");
 			w.append("final ").append(arg.getType()).append(" ").append(arg.getName());
 		}
 		w.append(") {\n");
 		w.append("\t\tsuper(new Response() {\n");
 		w.append("\n");
 		w.append("\t\t\t@Override\n");
-		w.append("\t\t\tpublic Iterable<String> head() {\n");
-		w.append("\t\t\t\treturn new RsEmpty().head();\n");
+		w.append("\t\t\tpublic Iterable<String> head() throws IOException {\n");
+		w.append("\t\t\t\treturn res.head();\n");
 		w.append("\t\t\t}\n");
 		w.append("\n");
 		w.append("\t\t\t@Override\n");
@@ -118,6 +114,25 @@ public class DefaultResponseClass implements ResponseClass {
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
 			w.append("\t\tthis.").append(arg.getName()).append(" = ").append(arg.getName()).append(";\n");
 		}
+		w.append("\t}\n");
+		w.append("\n");
+
+		w.append("\tpublic Rs").append(model.getName()).append("(");
+		boolean firstCArg = true;
+		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
+			if (!firstCArg) {
+				w.append(", ");
+			} else {
+				firstCArg = false;
+			}
+			w.append("final ").append(arg.getType()).append(" ").append(arg.getName());
+		}
+		w.append(") {\n");
+		w.append("\t\tthis(new RsEmpty()");
+		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
+			w.append(", ").append(arg.getName());
+		}
+		w.append(");\n");
 		w.append("\t}\n");
 
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
