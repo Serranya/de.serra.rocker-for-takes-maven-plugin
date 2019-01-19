@@ -61,7 +61,7 @@ public class DefaultResponseClass implements ResponseClass {
 <span class="nc" id="L61">		w.append(&quot;import org.takes.Response;\n&quot;);</span>
 <span class="nc" id="L62">		w.append(&quot;import org.takes.rs.RsEmpty;\n&quot;);</span>
 <span class="nc" id="L63">		w.append(&quot;import org.takes.rs.RsWrap;\n&quot;);</span>
-<span class="nc" id="L64">		w.append(&quot;import java.io.ByteArrayInputStream;&quot;);</span>
+<span class="nc" id="L64">		w.append(&quot;import java.io.ByteArrayInputStream;\n&quot;);</span>
 <span class="nc" id="L65">		w.append(&quot;import java.io.IOException;\n&quot;);</span>
 <span class="nc" id="L66">		w.append(&quot;import java.io.InputStream;\n&quot;);</span>
 
@@ -88,46 +88,61 @@ public class DefaultResponseClass implements ResponseClass {
 <span class="nc" id="L88">		w.append(&quot;\n&quot;);</span>
 
 <span class="nc" id="L90">		w.append(&quot;\tpublic Rs&quot;).append(model.getName()).append(&quot;(&quot;);</span>
-<span class="nc" id="L91">		boolean firstCArg = true;</span>
+<span class="nc" id="L91">		w.append(&quot;final Response res&quot;);</span>
 <span class="nc bnc" id="L92" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">			if (!firstCArg) {</span>
-<span class="nc" id="L94">				w.append(&quot;, &quot;);</span>
+<span class="nc" id="L93">			w.append(&quot;, &quot;);</span>
+<span class="nc" id="L94">			w.append(&quot;final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName());</span>
+<span class="nc" id="L95">		}</span>
+<span class="nc" id="L96">		w.append(&quot;) {\n&quot;);</span>
+<span class="nc" id="L97">		w.append(&quot;\t\tsuper(new Response() {\n&quot;);</span>
+<span class="nc" id="L98">		w.append(&quot;\n&quot;);</span>
+<span class="nc" id="L99">		w.append(&quot;\t\t\t@Override\n&quot;);</span>
+<span class="nc" id="L100">		w.append(&quot;\t\t\tpublic Iterable&lt;String&gt; head() throws IOException {\n&quot;);</span>
+<span class="nc" id="L101">		w.append(&quot;\t\t\t\treturn res.head();\n&quot;);</span>
+<span class="nc" id="L102">		w.append(&quot;\t\t\t}\n&quot;);</span>
+<span class="nc" id="L103">		w.append(&quot;\n&quot;);</span>
+<span class="nc" id="L104">		w.append(&quot;\t\t\t@Override\n&quot;);</span>
+<span class="nc" id="L105">		w.append(&quot;\t\t\tpublic InputStream body() throws IOException {\n&quot;);</span>
+<span class="nc" id="L106">		w.append(&quot;\t\t\t\treturn new &quot;).append(&quot;ByteArrayInputStream(\n&quot;);</span>
+<span class="nc" id="L107">		w.append(&quot;\t\t\t\t\tnew &quot;).append(model.getName()).append(&quot;()\n&quot;);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="nc" id="L109">			w.append(&quot;\t\t\t\t\t\t\t.&quot;).append(arg.getName()).append(&quot;(&quot;).append(arg.getName()).append(&quot;)\n&quot;);</span>
+<span class="nc" id="L110">		}</span>
+<span class="nc" id="L111">		w.append(&quot;\t\t\t\t\t\t\t.render(ArrayOfByteArraysOutput.FACTORY).toByteArray());\n&quot;);</span>
+<span class="nc" id="L112">		w.append(&quot;\t\t\t}\n&quot;);</span>
+<span class="nc" id="L113">		w.append(&quot;\t\t});\n&quot;);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="nc" id="L115">			w.append(&quot;\t\tthis.&quot;).append(arg.getName()).append(&quot; = &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
+<span class="nc" id="L116">		}</span>
+<span class="nc" id="L117">		w.append(&quot;\t}\n&quot;);</span>
+<span class="nc" id="L118">		w.append(&quot;\n&quot;);</span>
+
+<span class="nc" id="L120">		w.append(&quot;\tpublic Rs&quot;).append(model.getName()).append(&quot;(&quot;);</span>
+<span class="nc" id="L121">		boolean firstCArg = true;</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">			if (!firstCArg) {</span>
+<span class="nc" id="L124">				w.append(&quot;, &quot;);</span>
 			} else {
-<span class="nc" id="L96">				firstCArg = false;</span>
+<span class="nc" id="L126">				firstCArg = false;</span>
 			}
-<span class="nc" id="L98">			w.append(&quot;final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName());</span>
-<span class="nc" id="L99">		}</span>
-<span class="nc" id="L100">		w.append(&quot;) {\n&quot;);</span>
-<span class="nc" id="L101">		w.append(&quot;\t\tsuper(new Response() {\n&quot;);</span>
-<span class="nc" id="L102">		w.append(&quot;\n&quot;);</span>
-<span class="nc" id="L103">		w.append(&quot;\t\t\t@Override\n&quot;);</span>
-<span class="nc" id="L104">		w.append(&quot;\t\t\tpublic Iterable&lt;String&gt; head() {\n&quot;);</span>
-<span class="nc" id="L105">		w.append(&quot;\t\t\t\treturn new RsEmpty().head();\n&quot;);</span>
-<span class="nc" id="L106">		w.append(&quot;\t\t\t}\n&quot;);</span>
-<span class="nc" id="L107">		w.append(&quot;\n&quot;);</span>
-<span class="nc" id="L108">		w.append(&quot;\t\t\t@Override\n&quot;);</span>
-<span class="nc" id="L109">		w.append(&quot;\t\t\tpublic InputStream body() throws IOException {\n&quot;);</span>
-<span class="nc" id="L110">		w.append(&quot;\t\t\t\treturn new &quot;).append(&quot;ByteArrayInputStream(\n&quot;);</span>
-<span class="nc" id="L111">		w.append(&quot;\t\t\t\t\tnew &quot;).append(model.getName()).append(&quot;()\n&quot;);</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="nc" id="L113">			w.append(&quot;\t\t\t\t\t\t\t.&quot;).append(arg.getName()).append(&quot;(&quot;).append(arg.getName()).append(&quot;)\n&quot;);</span>
-<span class="nc" id="L114">		}</span>
-<span class="nc" id="L115">		w.append(&quot;\t\t\t\t\t\t\t.render(ArrayOfByteArraysOutput.FACTORY).toByteArray());\n&quot;);</span>
-<span class="nc" id="L116">		w.append(&quot;\t\t\t}\n&quot;);</span>
-<span class="nc" id="L117">		w.append(&quot;\t\t});\n&quot;);</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="nc" id="L119">			w.append(&quot;\t\tthis.&quot;).append(arg.getName()).append(&quot; = &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
-<span class="nc" id="L120">		}</span>
-<span class="nc" id="L121">		w.append(&quot;\t}\n&quot;);</span>
+<span class="nc" id="L128">			w.append(&quot;final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName());</span>
+<span class="nc" id="L129">		}</span>
+<span class="nc" id="L130">		w.append(&quot;) {\n&quot;);</span>
+<span class="nc" id="L131">		w.append(&quot;\t\tthis(new RsEmpty()&quot;);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="nc" id="L133">			w.append(&quot;, &quot;).append(arg.getName());</span>
+<span class="nc" id="L134">		}</span>
+<span class="nc" id="L135">		w.append(&quot;);\n&quot;);</span>
+<span class="nc" id="L136">		w.append(&quot;\t}\n&quot;);</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="nc" id="L124">			w.append(&quot;\n&quot;);</span>
-<span class="nc" id="L125">			w.append(&quot;\tpublic &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName()).append(&quot;() {\n&quot;);</span>
-<span class="nc" id="L126">			w.append(&quot;\t\treturn &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
-<span class="nc" id="L127">			w.append(&quot;\t}\n&quot;);</span>
-<span class="nc" id="L128">		}</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="nc" id="L139">			w.append(&quot;\n&quot;);</span>
+<span class="nc" id="L140">			w.append(&quot;\tpublic &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName()).append(&quot;() {\n&quot;);</span>
+<span class="nc" id="L141">			w.append(&quot;\t\treturn &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
+<span class="nc" id="L142">			w.append(&quot;\t}\n&quot;);</span>
+<span class="nc" id="L143">		}</span>
 
-<span class="nc" id="L130">		w.append(&quot;}\n&quot;);</span>
-<span class="nc" id="L131">	}</span>
+<span class="nc" id="L145">		w.append(&quot;}\n&quot;);</span>
+<span class="nc" id="L146">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
