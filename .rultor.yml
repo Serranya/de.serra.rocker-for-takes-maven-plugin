@@ -10,6 +10,7 @@ merge:
    - "./mvnw -B clean verify -Prelease"
 release:
    script: |-
+      export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
       mkdir -p ~/.ssh
       mv ../id_ed25519 ../id_ed25519.pub ~/.ssh
       chmod -R 600 ~/.ssh/*
