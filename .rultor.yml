@@ -4,6 +4,8 @@ assets:
    id_ed25519: serranya/priv-assets#id_ed25519
    id_ed25519.pub: serranya/priv-assets#id_ed25519.pub
    settings.xml: serranya/priv-assets#settings.xml
+docker:
+   image: "openjdk:11"
 merge:
    - "./mvnw -B clean verify -Prelease"
 release:
