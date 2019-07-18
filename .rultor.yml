@@ -16,5 +16,5 @@ release:
       echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null" > ~/.ssh/config
       git config --global user.email me@rultor.com
       git config --global user.name rultor
-      ./mvnw -B -e -s ../settings.xml clean deploy site-deploy -Drevision=$tag -Prelease
+      ./mvnw -B -e --no-transfer-progress -s ../settings.xml clean deploy site-deploy -Drevision=$tag -Prelease
 
