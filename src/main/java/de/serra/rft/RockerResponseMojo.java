@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -62,6 +63,12 @@ public class RockerResponseMojo extends AbstractMojo {
 	 */
 	@Parameter(property = "rft.useSupressFbWarnings", defaultValue = "true")
 	protected boolean useSupressFbWarnings;
+
+	/**
+	 * Adds the specified annotation to all generated classes. Can be used to add a custom {@code @Generated} annotation.
+	 */
+	@Parameter(property = "rft.annotations")
+	protected List<String> annotations;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		if (templateDirectory == null) {
@@ -113,7 +120,7 @@ public class RockerResponseMojo extends AbstractMojo {
 					flags.add(Flag.SUPPRESS_FB_WARNINGS);
 				}
 				if (model != null) {
-					new FileWritingResponseClass(model, outputDirectory.toPath(), flags).generate();
+					new FileWritingResponseClass(model, outputDirectory.toPath(), flags, annotations).generate();
 					generated++;
 				}
 			} catch (IOException e) {

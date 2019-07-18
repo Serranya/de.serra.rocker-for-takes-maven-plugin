@@ -18,15 +18,17 @@ public class FileWritingResponseClass implements ResponseClass {
 	private final TemplateModel model;
 	private final Path dir;
 	private final Set<Flag> flags;
+	private final Iterable<String> annotations;
 
-	public FileWritingResponseClass(TemplateModel model, Path baseDir) {
-		this(model, baseDir, Collections.emptySet());
+	public FileWritingResponseClass(TemplateModel model, Path baseDir, Iterable<String> annotations) {
+		this(model, baseDir, Collections.emptySet(), annotations);
 	}
 
-	public FileWritingResponseClass(TemplateModel model, Path baseDir, Set<Flag> flags) {
+	public FileWritingResponseClass(TemplateModel model, Path baseDir, Set<Flag> flags, Iterable<String> annotations) {
 		this.model = model;
 		this.dir = baseDir;
 		this.flags = flags;
+		this.annotations = annotations;
 	}
 
 	@SuppressFBWarnings("PATH_TRAVERSAL_IN")
@@ -43,7 +45,7 @@ public class FileWritingResponseClass implements ResponseClass {
 		}
 
 		try (OutputStream out = Files.newOutputStream(outDirPath.resolve("Rs" + model.getName() + ".java"))) {
-			new DefaultResponseClass(model, out, flags).generate();
+			new DefaultResponseClass(model, out, flags, annotations).generate();
 		}
 	}
 }
