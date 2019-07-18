@@ -18,19 +18,21 @@ public class DefaultResponseClass implements ResponseClass {
 	private final TemplateModel model;
 	private final OutputStream out;
 	private final Set<Flag> flags;
+	private final Iterable<String> annotations;
 
 	public enum Flag {
-		SUPPRESS_FB_WARNINGS, LOMBOK_EQUALS_AND_HASCODE
+		SUPPRESS_FB_WARNINGS, LOMBOK_EQUALS_AND_HASCODE;
 	}
 
-	public DefaultResponseClass(TemplateModel model, OutputStream out) {
-		this(model, out, Collections.emptySet());
+	public DefaultResponseClass(TemplateModel model, OutputStream out, Iterable<String> annotations) {
+		this(model, out, Collections.emptySet(), annotations);
 	}
 
-	public DefaultResponseClass(TemplateModel model, OutputStream out, Set<Flag> flags) {
+	public DefaultResponseClass(TemplateModel model, OutputStream out, Set<Flag> flags, Iterable<String> annotations) {
 		this.model = model;
 		this.out = out;
 		this.flags = flags;
+		this.annotations = annotations;
 	}
 
 	@Override
@@ -79,6 +81,9 @@ public class DefaultResponseClass implements ResponseClass {
 		}
 		if (flags.contains(Flag.LOMBOK_EQUALS_AND_HASCODE)) {
 			w.append("@EqualsAndHashCode(callSuper = true)\n");
+		}
+		for (String annotation : annotations) {
+			w.append(annotation).append("\n");
 		}
 		w.append("public class Rs").append(model.getName()).append(" extends RsWrap {\n");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
