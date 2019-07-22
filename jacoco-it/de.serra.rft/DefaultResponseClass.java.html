@@ -18,131 +18,135 @@ public class DefaultResponseClass implements ResponseClass {
 	private final TemplateModel model;
 	private final OutputStream out;
 	private final Set&lt;Flag&gt; flags;
+	private final Iterable&lt;String&gt; annotations;
 
-<span class="fc" id="L22">	public enum Flag {</span>
-<span class="fc" id="L23">		SUPPRESS_FB_WARNINGS, LOMBOK_EQUALS_AND_HASCODE</span>
+<span class="fc" id="L23">	public enum Flag {</span>
+<span class="fc" id="L24">		SUPPRESS_FB_WARNINGS, LOMBOK_EQUALS_AND_HASCODE;</span>
 	}
 
-	public DefaultResponseClass(TemplateModel model, OutputStream out) {
-<span class="nc" id="L27">		this(model, out, Collections.emptySet());</span>
-<span class="nc" id="L28">	}</span>
+	public DefaultResponseClass(TemplateModel model, OutputStream out, Iterable&lt;String&gt; annotations) {
+<span class="nc" id="L28">		this(model, out, Collections.emptySet(), annotations);</span>
+<span class="nc" id="L29">	}</span>
 
-<span class="fc" id="L30">	public DefaultResponseClass(TemplateModel model, OutputStream out, Set&lt;Flag&gt; flags) {</span>
-<span class="fc" id="L31">		this.model = model;</span>
-<span class="fc" id="L32">		this.out = out;</span>
-<span class="fc" id="L33">		this.flags = flags;</span>
-<span class="fc" id="L34">	}</span>
+<span class="fc" id="L31">	public DefaultResponseClass(TemplateModel model, OutputStream out, Set&lt;Flag&gt; flags, Iterable&lt;String&gt; annotations) {</span>
+<span class="fc" id="L32">		this.model = model;</span>
+<span class="fc" id="L33">		this.out = out;</span>
+<span class="fc" id="L34">		this.flags = flags;</span>
+<span class="fc" id="L35">		this.annotations = annotations;</span>
+<span class="fc" id="L36">	}</span>
 
 	@Override
 	public void generate() throws IOException {
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">		if (model.hasRockerBodyArgument()) {</span>
-<span class="nc" id="L39">			return;</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">		if (model.hasRockerBodyArgument()) {</span>
+<span class="nc" id="L41">			return;</span>
 		}
 
-<span class="fc" id="L42">		try (Writer w = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))) {</span>
-<span class="fc" id="L43">			createSourceTemplate(w);</span>
-<span class="fc" id="L44">			w.flush();</span>
+<span class="fc" id="L44">		try (Writer w = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))) {</span>
+<span class="fc" id="L45">			createSourceTemplate(w);</span>
+<span class="fc" id="L46">			w.flush();</span>
 		}
-<span class="fc" id="L46">	}</span>
+<span class="fc" id="L48">	}</span>
 
 	private void createSourceTemplate(Writer w) throws IOException {
-<span class="pc bpc" id="L49" title="2 of 4 branches missed.">		if (model.getPackageName() != null &amp;&amp; !&quot;&quot;.equals(model.getPackageName())) {</span>
-<span class="fc" id="L50">			w.append(&quot;package &quot;).append(model.getPackageName()).append(&quot;;&quot;).append(&quot;\n&quot;);</span>
+<span class="pc bpc" id="L51" title="2 of 4 branches missed.">		if (model.getPackageName() != null &amp;&amp; !&quot;&quot;.equals(model.getPackageName())) {</span>
+<span class="fc" id="L52">			w.append(&quot;package &quot;).append(model.getPackageName()).append(&quot;;&quot;).append(&quot;\n&quot;);</span>
 		}
 
-<span class="fc" id="L53">		w.append(&quot;\n&quot;);</span>
-<span class="fc" id="L54">		w.append(&quot;import com.fizzed.rocker.runtime.ArrayOfByteArraysOutput;\n&quot;);</span>
-<span class="fc bfc" id="L55" title="All 2 branches covered.">		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {</span>
-<span class="fc" id="L56">			w.append(&quot;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;\n&quot;);</span>
+<span class="fc" id="L55">		w.append(&quot;\n&quot;);</span>
+<span class="fc" id="L56">		w.append(&quot;import com.fizzed.rocker.runtime.ArrayOfByteArraysOutput;\n&quot;);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {</span>
+<span class="fc" id="L58">			w.append(&quot;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;\n&quot;);</span>
 		}
-<span class="fc bfc" id="L58" title="All 2 branches covered.">		if (flags.contains(Flag.LOMBOK_EQUALS_AND_HASCODE)) {</span>
-<span class="fc" id="L59">			w.append(&quot;import lombok.EqualsAndHashCode;\n&quot;);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		if (flags.contains(Flag.LOMBOK_EQUALS_AND_HASCODE)) {</span>
+<span class="fc" id="L61">			w.append(&quot;import lombok.EqualsAndHashCode;\n&quot;);</span>
 		}
-<span class="fc" id="L61">		w.append(&quot;import org.takes.Response;\n&quot;);</span>
-<span class="fc" id="L62">		w.append(&quot;import org.takes.rs.RsEmpty;\n&quot;);</span>
-<span class="fc" id="L63">		w.append(&quot;import org.takes.rs.RsWrap;\n&quot;);</span>
-<span class="fc" id="L64">		w.append(&quot;import java.io.ByteArrayInputStream;\n&quot;);</span>
-<span class="fc" id="L65">		w.append(&quot;import java.io.IOException;\n&quot;);</span>
-<span class="fc" id="L66">		w.append(&quot;import java.io.InputStream;\n&quot;);</span>
+<span class="fc" id="L63">		w.append(&quot;import org.takes.Response;\n&quot;);</span>
+<span class="fc" id="L64">		w.append(&quot;import org.takes.rs.RsEmpty;\n&quot;);</span>
+<span class="fc" id="L65">		w.append(&quot;import org.takes.rs.RsWrap;\n&quot;);</span>
+<span class="fc" id="L66">		w.append(&quot;import java.io.ByteArrayInputStream;\n&quot;);</span>
+<span class="fc" id="L67">		w.append(&quot;import java.io.IOException;\n&quot;);</span>
+<span class="fc" id="L68">		w.append(&quot;import java.io.InputStream;\n&quot;);</span>
 
-<span class="fc" id="L68">		w.append(&quot;\n&quot;);</span>
+<span class="fc" id="L70">		w.append(&quot;\n&quot;);</span>
 
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">		for (JavaImport i : model.getImports()) {</span>
-<span class="nc" id="L71">			w.append(&quot;import &quot;).append(i.getStatement()).append(&quot;;\n&quot;);</span>
-<span class="nc" id="L72">		}</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">		for (JavaImport i : model.getImports()) {</span>
+<span class="nc" id="L73">			w.append(&quot;import &quot;).append(i.getStatement()).append(&quot;;\n&quot;);</span>
+<span class="nc" id="L74">		}</span>
 
-<span class="fc" id="L74">		w.append(&quot;\n&quot;);</span>
+<span class="fc" id="L76">		w.append(&quot;\n&quot;);</span>
 
-<span class="fc bfc" id="L76" title="All 2 branches covered.">		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {</span>
-<span class="fc" id="L77">			w.append(&quot;@SuppressFBWarnings(value = \&quot;USBR_UNNECESSARY_STORE_BEFORE_RETURN\&quot;, &quot;</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">		if (flags.contains(Flag.SUPPRESS_FB_WARNINGS)) {</span>
+<span class="fc" id="L79">			w.append(&quot;@SuppressFBWarnings(value = \&quot;USBR_UNNECESSARY_STORE_BEFORE_RETURN\&quot;, &quot;</span>
 					+ &quot;justification = \&quot;generated code\&quot;)\n&quot;);
 		}
-<span class="fc bfc" id="L80" title="All 2 branches covered.">		if (flags.contains(Flag.LOMBOK_EQUALS_AND_HASCODE)) {</span>
-<span class="fc" id="L81">			w.append(&quot;@EqualsAndHashCode(callSuper = true)\n&quot;);</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">		if (flags.contains(Flag.LOMBOK_EQUALS_AND_HASCODE)) {</span>
+<span class="fc" id="L83">			w.append(&quot;@EqualsAndHashCode(callSuper = true)\n&quot;);</span>
 		}
-<span class="fc" id="L83">		w.append(&quot;public class Rs&quot;).append(model.getName()).append(&quot; extends RsWrap {\n&quot;);</span>
-<span class="fc bfc" id="L84" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="fc" id="L85">			w.append(&quot;\tprivate final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
-<span class="fc" id="L86">		}</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">		for (String annotation : annotations) {</span>
+<span class="nc" id="L86">			w.append(annotation).append(&quot;\n&quot;);</span>
+<span class="nc" id="L87">		}</span>
+<span class="fc" id="L88">		w.append(&quot;public class Rs&quot;).append(model.getName()).append(&quot; extends RsWrap {\n&quot;);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="fc" id="L90">			w.append(&quot;\tprivate final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
+<span class="fc" id="L91">		}</span>
 
-<span class="fc" id="L88">		w.append(&quot;\n&quot;);</span>
+<span class="fc" id="L93">		w.append(&quot;\n&quot;);</span>
 
-<span class="fc" id="L90">		w.append(&quot;\tpublic Rs&quot;).append(model.getName()).append(&quot;(&quot;);</span>
-<span class="fc" id="L91">		w.append(&quot;final Response res&quot;);</span>
-<span class="fc bfc" id="L92" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="fc" id="L93">			w.append(&quot;, &quot;);</span>
-<span class="fc" id="L94">			w.append(&quot;final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName());</span>
-<span class="fc" id="L95">		}</span>
-<span class="fc" id="L96">		w.append(&quot;) {\n&quot;);</span>
-<span class="fc" id="L97">		w.append(&quot;\t\tsuper(new Response() {\n&quot;);</span>
-<span class="fc" id="L98">		w.append(&quot;\n&quot;);</span>
-<span class="fc" id="L99">		w.append(&quot;\t\t\t@Override\n&quot;);</span>
-<span class="fc" id="L100">		w.append(&quot;\t\t\tpublic Iterable&lt;String&gt; head() throws IOException {\n&quot;);</span>
-<span class="fc" id="L101">		w.append(&quot;\t\t\t\treturn res.head();\n&quot;);</span>
-<span class="fc" id="L102">		w.append(&quot;\t\t\t}\n&quot;);</span>
+<span class="fc" id="L95">		w.append(&quot;\tpublic Rs&quot;).append(model.getName()).append(&quot;(&quot;);</span>
+<span class="fc" id="L96">		w.append(&quot;final Response res&quot;);</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="fc" id="L98">			w.append(&quot;, &quot;);</span>
+<span class="fc" id="L99">			w.append(&quot;final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName());</span>
+<span class="fc" id="L100">		}</span>
+<span class="fc" id="L101">		w.append(&quot;) {\n&quot;);</span>
+<span class="fc" id="L102">		w.append(&quot;\t\tsuper(new Response() {\n&quot;);</span>
 <span class="fc" id="L103">		w.append(&quot;\n&quot;);</span>
 <span class="fc" id="L104">		w.append(&quot;\t\t\t@Override\n&quot;);</span>
-<span class="fc" id="L105">		w.append(&quot;\t\t\tpublic InputStream body() throws IOException {\n&quot;);</span>
-<span class="fc" id="L106">		w.append(&quot;\t\t\t\treturn new &quot;).append(&quot;ByteArrayInputStream(\n&quot;);</span>
-<span class="fc" id="L107">		w.append(&quot;\t\t\t\t\tnew &quot;).append(model.getName()).append(&quot;()\n&quot;);</span>
-<span class="fc bfc" id="L108" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="fc" id="L109">			w.append(&quot;\t\t\t\t\t\t\t.&quot;).append(arg.getName()).append(&quot;(&quot;).append(arg.getName()).append(&quot;)\n&quot;);</span>
-<span class="fc" id="L110">		}</span>
-<span class="fc" id="L111">		w.append(&quot;\t\t\t\t\t\t\t.render(ArrayOfByteArraysOutput.FACTORY).toByteArray());\n&quot;);</span>
-<span class="fc" id="L112">		w.append(&quot;\t\t\t}\n&quot;);</span>
-<span class="fc" id="L113">		w.append(&quot;\t\t});\n&quot;);</span>
-<span class="fc bfc" id="L114" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="fc" id="L115">			w.append(&quot;\t\tthis.&quot;).append(arg.getName()).append(&quot; = &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
-<span class="fc" id="L116">		}</span>
-<span class="fc" id="L117">		w.append(&quot;\t}\n&quot;);</span>
-<span class="fc" id="L118">		w.append(&quot;\n&quot;);</span>
+<span class="fc" id="L105">		w.append(&quot;\t\t\tpublic Iterable&lt;String&gt; head() throws IOException {\n&quot;);</span>
+<span class="fc" id="L106">		w.append(&quot;\t\t\t\treturn res.head();\n&quot;);</span>
+<span class="fc" id="L107">		w.append(&quot;\t\t\t}\n&quot;);</span>
+<span class="fc" id="L108">		w.append(&quot;\n&quot;);</span>
+<span class="fc" id="L109">		w.append(&quot;\t\t\t@Override\n&quot;);</span>
+<span class="fc" id="L110">		w.append(&quot;\t\t\tpublic InputStream body() throws IOException {\n&quot;);</span>
+<span class="fc" id="L111">		w.append(&quot;\t\t\t\treturn new &quot;).append(model.getName()).append(&quot;()\n&quot;);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="fc" id="L113">			w.append(&quot;\t\t\t\t\t\t.&quot;).append(arg.getName()).append(&quot;(&quot;).append(arg.getName()).append(&quot;)\n&quot;);</span>
+<span class="fc" id="L114">		}</span>
+<span class="fc" id="L115">		w.append(&quot;\t\t\t\t\t\t.render(ArrayOfByteArraysOutput.FACTORY).asInputStream();\n&quot;);</span>
+<span class="fc" id="L116">		w.append(&quot;\t\t\t}\n&quot;);</span>
+<span class="fc" id="L117">		w.append(&quot;\t\t});\n&quot;);</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="fc" id="L119">			w.append(&quot;\t\tthis.&quot;).append(arg.getName()).append(&quot; = &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
+<span class="fc" id="L120">		}</span>
+<span class="fc" id="L121">		w.append(&quot;\t}\n&quot;);</span>
+<span class="fc" id="L122">		w.append(&quot;\n&quot;);</span>
 
-<span class="fc" id="L120">		w.append(&quot;\tpublic Rs&quot;).append(model.getName()).append(&quot;(&quot;);</span>
-<span class="fc" id="L121">		boolean firstCArg = true;</span>
-<span class="fc bfc" id="L122" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="fc bfc" id="L123" title="All 2 branches covered.">			if (!firstCArg) {</span>
-<span class="fc" id="L124">				w.append(&quot;, &quot;);</span>
+<span class="fc" id="L124">		w.append(&quot;\tpublic Rs&quot;).append(model.getName()).append(&quot;(&quot;);</span>
+<span class="fc" id="L125">		boolean firstCArg = true;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">			if (!firstCArg) {</span>
+<span class="fc" id="L128">				w.append(&quot;, &quot;);</span>
 			} else {
-<span class="fc" id="L126">				firstCArg = false;</span>
+<span class="fc" id="L130">				firstCArg = false;</span>
 			}
-<span class="fc" id="L128">			w.append(&quot;final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName());</span>
-<span class="fc" id="L129">		}</span>
-<span class="fc" id="L130">		w.append(&quot;) {\n&quot;);</span>
-<span class="fc" id="L131">		w.append(&quot;\t\tthis(new RsEmpty()&quot;);</span>
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="fc" id="L133">			w.append(&quot;, &quot;).append(arg.getName());</span>
-<span class="fc" id="L134">		}</span>
-<span class="fc" id="L135">		w.append(&quot;);\n&quot;);</span>
-<span class="fc" id="L136">		w.append(&quot;\t}\n&quot;);</span>
+<span class="fc" id="L132">			w.append(&quot;final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName());</span>
+<span class="fc" id="L133">		}</span>
+<span class="fc" id="L134">		w.append(&quot;) {\n&quot;);</span>
+<span class="fc" id="L135">		w.append(&quot;\t\tthis(new RsEmpty()&quot;);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="fc" id="L137">			w.append(&quot;, &quot;).append(arg.getName());</span>
+<span class="fc" id="L138">		}</span>
+<span class="fc" id="L139">		w.append(&quot;);\n&quot;);</span>
+<span class="fc" id="L140">		w.append(&quot;\t}\n&quot;);</span>
 
-<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
-<span class="fc" id="L139">			w.append(&quot;\n&quot;);</span>
-<span class="fc" id="L140">			w.append(&quot;\tpublic &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName()).append(&quot;() {\n&quot;);</span>
-<span class="fc" id="L141">			w.append(&quot;\t\treturn &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
-<span class="fc" id="L142">			w.append(&quot;\t}\n&quot;);</span>
-<span class="fc" id="L143">		}</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
+<span class="fc" id="L143">			w.append(&quot;\n&quot;);</span>
+<span class="fc" id="L144">			w.append(&quot;\tpublic &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName()).append(&quot;() {\n&quot;);</span>
+<span class="fc" id="L145">			w.append(&quot;\t\treturn &quot;).append(arg.getName()).append(&quot;;\n&quot;);</span>
+<span class="fc" id="L146">			w.append(&quot;\t}\n&quot;);</span>
+<span class="fc" id="L147">		}</span>
 
-<span class="fc" id="L145">		w.append(&quot;}\n&quot;);</span>
-<span class="fc" id="L146">	}</span>
+<span class="fc" id="L149">		w.append(&quot;}\n&quot;);</span>
+<span class="fc" id="L150">	}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
