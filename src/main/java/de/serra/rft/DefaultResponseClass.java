@@ -108,12 +108,11 @@ public class DefaultResponseClass implements ResponseClass {
 		w.append("\n");
 		w.append("\t\t\t@Override\n");
 		w.append("\t\t\tpublic InputStream body() throws IOException {\n");
-		w.append("\t\t\t\treturn new ").append("ByteArrayInputStream(\n");
-		w.append("\t\t\t\t\tnew ").append(model.getName()).append("()\n");
+		w.append("\t\t\t\treturn new ").append(model.getName()).append("()\n");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
-			w.append("\t\t\t\t\t\t\t.").append(arg.getName()).append("(").append(arg.getName()).append(")\n");
+			w.append("\t\t\t\t\t\t.").append(arg.getName()).append("(").append(arg.getName()).append(")\n");
 		}
-		w.append("\t\t\t\t\t\t\t.render(ArrayOfByteArraysOutput.FACTORY).toByteArray());\n");
+		w.append("\t\t\t\t\t\t.render(ArrayOfByteArraysOutput.FACTORY).asInputStream();\n");
 		w.append("\t\t\t}\n");
 		w.append("\t\t});\n");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
