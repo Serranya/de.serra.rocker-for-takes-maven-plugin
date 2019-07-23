@@ -41,7 +41,7 @@
 
 		<owasp.dep.supressionFile>dependency-check-suppressions.xml</owasp.dep.supressionFile>
 
-		<revision>0.0.7-SNAPSHOT</revision>
+		<revision>0.0.9-SNAPSHOT</revision>
 
 		<scmpublish.content>${project.build.directory}/${project.groupId}.${project.artifactId}/${project.artifactId}</scmpublish.content>
 
@@ -122,18 +122,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<!-- workaround until https://issues.apache.org/jira/browse/MCHECKSTYLE-357 is released -->
-					<configLocation>${project.build.directory}/checkstyle-rules.xml</configLocation>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
 
 	<profiles>
 		<profile>

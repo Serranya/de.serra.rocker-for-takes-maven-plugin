@@ -63,7 +63,6 @@ public class DefaultResponseClass implements ResponseClass {
 		w.append("import org.takes.Response;\n");
 		w.append("import org.takes.rs.RsEmpty;\n");
 		w.append("import org.takes.rs.RsWrap;\n");
-		w.append("import java.io.ByteArrayInputStream;\n");
 		w.append("import java.io.IOException;\n");
 		w.append("import java.io.InputStream;\n");
 
@@ -99,22 +98,16 @@ public class DefaultResponseClass implements ResponseClass {
 			w.append("final ").append(arg.getType()).append(" ").append(arg.getName());
 		}
 		w.append(") {\n");
-		w.append("\t\tsuper(new Response() {\n");
-		w.append("\n");
-		w.append("\t\t\t@Override\n");
-		w.append("\t\t\tpublic Iterable<String> head() throws IOException {\n");
-		w.append("\t\t\t\treturn res.head();\n");
-		w.append("\t\t\t}\n");
-		w.append("\n");
-		w.append("\t\t\t@Override\n");
-		w.append("\t\t\tpublic InputStream body() throws IOException {\n");
-		w.append("\t\t\t\treturn new ").append(model.getName()).append("()\n");
+		w.append("\t\tsuper(\n");
+		w.append("\t\t\t\tnew Rs").append(model.getName()).append("Response(\n");
+		w.append("\t\t\t\t\t\tres,\n");
+		w.append("\t\t\t\t\t\tnew ").append(model.getName()).append("()\n");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
-			w.append("\t\t\t\t\t\t.").append(arg.getName()).append("(").append(arg.getName()).append(")\n");
+			w.append("\t\t\t\t\t\t\t.").append(arg.getName()).append("(").append(arg.getName()).append(")\n");
 		}
-		w.append("\t\t\t\t\t\t.render(ArrayOfByteArraysOutput.FACTORY).asInputStream();\n");
-		w.append("\t\t\t}\n");
-		w.append("\t\t});\n");
+		w.append("\t\t\t\t\t\t\t.render(ArrayOfByteArraysOutput.FACTORY).asInputStream()\n");
+		w.append("\t\t\t\t)\n");
+		w.append("\t\t);\n");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
 			w.append("\t\tthis.").append(arg.getName()).append(" = ").append(arg.getName()).append(";\n");
 		}
@@ -145,6 +138,32 @@ public class DefaultResponseClass implements ResponseClass {
 			w.append("\t\treturn ").append(arg.getName()).append(";\n");
 			w.append("\t}\n");
 		}
+
+		w.append("\n");
+		// @todo maybe extend from custom model and put this class there just once
+		for (String annotation : annotations) {
+			w.append("\t").append(annotation).append("\n");
+		}
+		w.append("\tprivate static class Rs").append(model.getName()).append("Response")
+				.append(" implements Response {\n");
+		w.append("\t\tprivate final Response head;\n");
+		w.append("\t\tprivate final InputStream body;\n");
+		w.append("\n");
+		w.append("\t\tRs").append(model.getName()).append("Response(Response head, InputStream body) {\n");
+		w.append("\t\t\tthis.head = head;\n");
+		w.append("\t\t\tthis.body = body;\n");
+		w.append("\t\t}\n");
+		w.append("\n");
+		w.append("\t\t@Override\n");
+		w.append("\t\tpublic Iterable<String> head() throws IOException {\n");
+		w.append("\t\t\treturn head.head();\n");
+		w.append("\t\t}\n");
+		w.append("\n");
+		w.append("\t\t@Override\n");
+		w.append("\t\tpublic InputStream body() throws IOException {\n");
+		w.append("\t\t\treturn body;\n");
+		w.append("\t\t}\n");
+		w.append("\t}\n");
 
 		w.append("}\n");
 	}
