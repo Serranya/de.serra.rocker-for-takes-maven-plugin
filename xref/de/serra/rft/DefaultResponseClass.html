@@ -69,7 +69,7 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  			w.append(<span class="jxr_string">"import lombok.EqualsAndHashCode;\n"</span>);
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  		}
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  		w.append(<span class="jxr_string">"import org.takes.Response;\n"</span>);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  		w.append(<span class="jxr_string">"import org.takes.rs.RsEmpty;\n"</span>);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  		w.append(<span class="jxr_string">"import org.takes.rs.RsWithStatus;\n"</span>);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  		w.append(<span class="jxr_string">"import org.takes.rs.RsWrap;\n"</span>);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  		w.append(<span class="jxr_string">"import java.io.IOException;\n"</span>);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  		w.append(<span class="jxr_string">"import java.io.InputStream;\n"</span>);
@@ -133,7 +133,7 @@
 <a class="jxr_linenumber" name="L125" href="#L125">125</a> 			w.append(<span class="jxr_string">"final "</span>).append(arg.getType()).append(<span class="jxr_string">" "</span>).append(arg.getName());
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> 		}
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> 		w.append(<span class="jxr_string">") {\n"</span>);
-<a class="jxr_linenumber" name="L128" href="#L128">128</a> 		w.append(<span class="jxr_string">"\t\tthis(new RsEmpty()"</span>);
+<a class="jxr_linenumber" name="L128" href="#L128">128</a> 		w.append(<span class="jxr_string">"\t\tthis(new RsWithStatus(200)"</span>);
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> 		<strong class="jxr_keyword">for</strong> (Argument arg : model.getArgumentsWithoutRockerBody()) {
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> 			w.append(<span class="jxr_string">", "</span>).append(arg.getName());
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> 		}

@@ -61,7 +61,7 @@ public class DefaultResponseClass implements ResponseClass {
 <span class="nc" id="L61">			w.append(&quot;import lombok.EqualsAndHashCode;\n&quot;);</span>
 		}
 <span class="nc" id="L63">		w.append(&quot;import org.takes.Response;\n&quot;);</span>
-<span class="nc" id="L64">		w.append(&quot;import org.takes.rs.RsEmpty;\n&quot;);</span>
+<span class="nc" id="L64">		w.append(&quot;import org.takes.rs.RsWithStatus;\n&quot;);</span>
 <span class="nc" id="L65">		w.append(&quot;import org.takes.rs.RsWrap;\n&quot;);</span>
 <span class="nc" id="L66">		w.append(&quot;import java.io.IOException;\n&quot;);</span>
 <span class="nc" id="L67">		w.append(&quot;import java.io.InputStream;\n&quot;);</span>
@@ -125,7 +125,7 @@ public class DefaultResponseClass implements ResponseClass {
 <span class="nc" id="L125">			w.append(&quot;final &quot;).append(arg.getType()).append(&quot; &quot;).append(arg.getName());</span>
 <span class="nc" id="L126">		}</span>
 <span class="nc" id="L127">		w.append(&quot;) {\n&quot;);</span>
-<span class="nc" id="L128">		w.append(&quot;\t\tthis(new RsEmpty()&quot;);</span>
+<span class="nc" id="L128">		w.append(&quot;\t\tthis(new RsWithStatus(200)&quot;);</span>
 <span class="nc bnc" id="L129" title="All 2 branches missed.">		for (Argument arg : model.getArgumentsWithoutRockerBody()) {</span>
 <span class="nc" id="L130">			w.append(&quot;, &quot;).append(arg.getName());</span>
 <span class="nc" id="L131">		}</span>
