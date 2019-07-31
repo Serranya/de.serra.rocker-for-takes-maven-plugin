@@ -61,7 +61,7 @@ public class DefaultResponseClass implements ResponseClass {
 			w.append("import lombok.EqualsAndHashCode;\n");
 		}
 		w.append("import org.takes.Response;\n");
-		w.append("import org.takes.rs.RsEmpty;\n");
+		w.append("import org.takes.rs.RsWithStatus;\n");
 		w.append("import org.takes.rs.RsWrap;\n");
 		w.append("import java.io.IOException;\n");
 		w.append("import java.io.InputStream;\n");
@@ -125,7 +125,7 @@ public class DefaultResponseClass implements ResponseClass {
 			w.append("final ").append(arg.getType()).append(" ").append(arg.getName());
 		}
 		w.append(") {\n");
-		w.append("\t\tthis(new RsEmpty()");
+		w.append("\t\tthis(new RsWithStatus(200)");
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
 			w.append(", ").append(arg.getName());
 		}

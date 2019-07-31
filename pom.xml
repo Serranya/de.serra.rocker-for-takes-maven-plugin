@@ -41,7 +41,7 @@
 
 		<owasp.dep.supressionFile>dependency-check-suppressions.xml</owasp.dep.supressionFile>
 
-		<revision>0.0.9-SNAPSHOT</revision>
+		<revision>0.0.10-SNAPSHOT</revision>
 
 		<scmpublish.content>${project.build.directory}/${project.groupId}.${project.artifactId}/${project.artifactId}</scmpublish.content>
 
