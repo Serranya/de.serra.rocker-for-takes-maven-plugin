@@ -1,5 +1,7 @@
 package de.serra.rft;
 
+import de.serra.rft.DefaultResponseClass.Flag;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -11,8 +13,6 @@ import com.fizzed.rocker.compiler.RockerUtil;
 import com.fizzed.rocker.compiler.TemplateParser;
 import com.fizzed.rocker.model.TemplateModel;
 import com.fizzed.rocker.runtime.ParserException;
-
-import de.serra.rft.DefaultResponseClass.Flag;
 
 import java.io.File;
 import java.io.IOException;

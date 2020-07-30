@@ -1,9 +1,8 @@
 package de.serra.rft;
+import de.serra.rft.DefaultResponseClass.Flag;
 
 import com.fizzed.rocker.compiler.RockerUtil;
 import com.fizzed.rocker.model.TemplateModel;
-
-import de.serra.rft.DefaultResponseClass.Flag;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.IOException;

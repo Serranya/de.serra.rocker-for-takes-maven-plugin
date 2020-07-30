@@ -1,5 +1,6 @@
 package de.serra.rft;
 
+import com.fizzed.rocker.ContentType;
 import com.fizzed.rocker.model.Argument;
 import com.fizzed.rocker.model.JavaImport;
 import com.fizzed.rocker.model.TemplateModel;
@@ -62,6 +63,9 @@ public class DefaultResponseClass implements ResponseClass {
 		}
 		w.append("import org.takes.Response;\n");
 		w.append("import org.takes.rs.RsWithStatus;\n");
+		if (ContentType.HTML == model.getContentType()) {
+			w.append("import org.takes.rs.RsWithType;\n");
+		}
 		w.append("import org.takes.rs.RsWrap;\n");
 		w.append("import java.io.IOException;\n");
 		w.append("import java.io.InputStream;\n");
@@ -125,7 +129,11 @@ public class DefaultResponseClass implements ResponseClass {
 			w.append("final ").append(arg.getType()).append(" ").append(arg.getName());
 		}
 		w.append(") {\n");
-		w.append("\t\tthis(new RsWithStatus(200)");
+		if (ContentType.HTML == model.getContentType()) {
+			w.append("\t\tthis(new RsWithType(new RsWithStatus(200), \"text/html\")");
+		} else {
+			w.append("\t\tthis(new RsWithStatus(200)");
+		}
 		for (Argument arg : model.getArgumentsWithoutRockerBody()) {
 			w.append(", ").append(arg.getName());
 		}
