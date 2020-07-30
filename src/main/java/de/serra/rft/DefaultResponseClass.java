@@ -65,6 +65,7 @@ public class DefaultResponseClass implements ResponseClass {
 		w.append("import org.takes.rs.RsWithStatus;\n");
 		if (ContentType.HTML == model.getContentType()) {
 			w.append("import org.takes.rs.RsWithType;\n");
+			w.append("import static java.nio.charset.StandardCharsets.UTF_8;\n");
 		}
 		w.append("import org.takes.rs.RsWrap;\n");
 		w.append("import java.io.IOException;\n");
@@ -130,7 +131,7 @@ public class DefaultResponseClass implements ResponseClass {
 		}
 		w.append(") {\n");
 		if (ContentType.HTML == model.getContentType()) {
-			w.append("\t\tthis(new RsWithType(new RsWithStatus(200), \"text/html\")");
+			w.append("\t\tthis(new RsWithType(new RsWithStatus(200), \"text/html\", UTF_8)");
 		} else {
 			w.append("\t\tthis(new RsWithStatus(200)");
 		}
